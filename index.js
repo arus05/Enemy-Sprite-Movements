@@ -1,3 +1,10 @@
+// Imports
+import enemyData from "./data/enemyData.json" assert {type: 'json'}
+console.log(enemyData)
+
+// URL
+const enemyOne = enemyData[0]
+
 // Canvas setup
 const canvas = document.getElementById("canvas");
 const CANVAS_WIDTH = canvas.width = 500;
@@ -5,35 +12,61 @@ const CANVAS_HEIGHT = canvas.height = 500;
 const ctx = canvas.getContext("2d");
 
 // Enemy class
-class Enemy1{
-  constructor(imgSrc){
+class Enemy{
+  constructor(imgSrc, actualWidth, actualHeight, numFrames){
     this.image = new Image();
     this.image.src = imgSrc;
-    this.actualWidth = Math.floor(1758/6);
-    this.actualHeight = 155;
-    this.width = this.actualWidth/3;
-    this.height = this.actualHeight/3;
+
+    this.actualWidth = actualWidth;
+    this.actualHeight = actualHeight;
+    this.width = actualWidth/3;
+    this.height = actualHeight/3;
+
+    this.numFrames = numFrames;
+    this.currFrame = 0; // 0-5
+    this.gameFrame = 0;
+
+    this.x = Math.random()*(CANVAS_WIDTH - this.width);
+    this.y = Math.random()*(CANVAS_HEIGHT - this.height);
+
+    this.speedReduction = Math.floor(Math.random()*6) + 5;
   }
 
 
   update(){
-    return
+    if (this.gameFrame % this.speedReduction === 0){
+      this.currFrame = (this.currFrame + 1) % this.numFrames;
+      this.x = this.x < -this.width ? CANVAS_WIDTH : this.x -10
+    }
   }
 
   draw(){
-    ctx.drawImage(enemy1.image, 0, 0, enemy1.actualWidth, enemy1.actualHeight,
-      0, 0, enemy1.width, enemy1.height);
+    ctx.drawImage(this.image, this.currFrame*this.actualWidth, 0, this.actualWidth, this.actualHeight,
+      this.x, this.y, this.width, this.height);
+    this.gameFrame++;
   }
 
 }
 
+// Enemy Array
+const enemies = []
+let type = 3;
+for (let i=0; i<50; i++){
+  enemies.push(new Enemy(enemyData[type].url, enemyData[type].width, enemyData[type].height, enemyData[type].numFrames))
+}
+
+
+
 // Animate function
 let animationFrame;
-const enemy1 = new Enemy1("./images/enemy1.png");
+
 function animate(){
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  ctx.drawImage(enemy1.image, 0, 0, enemy1.actualWidth, enemy1.actualHeight,
-                0, 0, enemy1.width, enemy1.height);
+  enemies.forEach(enemy => {
+    enemy.draw();
+    enemy.update();
+  })
+
   animationFrame = requestAnimationFrame(animate);
 }
 

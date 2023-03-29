@@ -1,0 +1,30 @@
+[
+  {
+    "name": "enemy1",
+    "numFrames": 6,
+    "height": 155,
+    "width": 293,
+    "url": "./images/enemy1.png"
+  },
+  {
+    "name": "enemy2",
+    "numFrames": 6,
+    "height": 188,
+    "width": 266,
+    "url": "./images/enemy2.png"
+  },
+  {
+    "name": "enemy1",
+    "numFrames": 6,
+    "height": 177,
+    "width": 218,
+    "url": "./images/enemy3.png"
+  },
+  {
+    "name": "enemy1",
+    "numFrames": 9,
+    "height": 212,
+    "width": 213,
+    "url": "./images/enemy4.png"
+  }
+]
